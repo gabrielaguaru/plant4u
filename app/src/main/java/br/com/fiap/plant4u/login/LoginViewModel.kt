@@ -1,7 +1,16 @@
 package br.com.fiap.plant4u.login
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
+import br.com.fiap.plant4u.model.User
+import br.com.fiap.plant4u.service.RetrofitFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginViewModel {
 
@@ -11,11 +20,39 @@ class LoginViewModel {
     private val _password = MutableLiveData<String>()
     val password: LiveData<String> = _password
 
+    private val _loginState = MutableLiveData<User>()
+    val loginState: LiveData<User> = _loginState
+
     fun onEmailChange(newEmail: String) {
         _email.value = newEmail
     }
 
     fun onPasswordChange(newPassword: String) {
         _password.value = newPassword
+    }
+}
+
+fun performLogin(email: String, password: String, context: Context, navController: NavController) {
+    val user = User(email, password)
+
+    GlobalScope.launch(Dispatchers.IO) {
+        try {
+            val response = RetrofitFactory().getAuthService().authenticateUser(user)
+
+            if (response.isSuccessful) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Login bem sucedido", Toast.LENGTH_SHORT).show()
+                    navController.navigate("register")
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Erro no login. Tente novamente", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Ops! Ocorreu um erro. Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

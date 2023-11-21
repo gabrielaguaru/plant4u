@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -39,6 +40,7 @@ import br.com.fiap.plant4u.R
 import br.com.fiap.plant4u.components.BigLogo
 import br.com.fiap.plant4u.components.Header
 import br.com.fiap.plant4u.components.Input
+import br.com.fiap.plant4u.service.RetrofitFactory
 
 @Composable
 fun LoginScreen(
@@ -48,6 +50,8 @@ fun LoginScreen(
 
     val email by loginViewModel.email.observeAsState(initial = "")
     val password by loginViewModel.password.observeAsState(initial = "")
+    val loginState by loginViewModel.loginState.observeAsState()
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -79,7 +83,7 @@ fun LoginScreen(
             Column() {
                 Button(
                     onClick = {
-                        navController.navigate("home")
+                        performLogin(email, password, context, navController)
                     }, colors = ButtonDefaults.buttonColors(
                         contentColor = Color.White,
                         containerColor = colorResource(id = R.color.primary_green)

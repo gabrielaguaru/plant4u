@@ -82,7 +82,8 @@ fun PlantCard(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = name,
-                            fontSize = 14.sp
+                            fontSize = 14.sp,
+                            color = colorResource(id = R.color.black)
                         )
                         if (isError) {
                             Icon(
@@ -138,11 +139,13 @@ fun PlantCard(
                 Column {
                     Text(
                         text = "Última rega: $lastWatering",
-                        fontSize = 14.sp
+                        fontSize = 14.sp,
+                        color = colorResource(id = R.color.black)
                     )
                     Text(
                         text = "Freq. de rega: $frequency",
-                        fontSize = 14.sp
+                        fontSize = 14.sp,
+                        color = colorResource(id = R.color.black)
                     )
                     Text(
                         text = "Próx. rega: $nextWatering",

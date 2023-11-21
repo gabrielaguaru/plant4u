@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = "register-plant"
+                        startDestination = "main"
                     ) {
                         composable(route = "main") {
                             MainScreen(navController = navController)

@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -51,6 +52,8 @@ fun RegisterScreen(
     val confirmEmail by registerViewModel.confirmEmail.observeAsState(initial = "")
     val password by registerViewModel.password.observeAsState(initial = "")
     val confirmPassword by registerViewModel.confirmPassword.observeAsState(initial = "")
+    val showError by registerViewModel.showError.observeAsState(initial = false)
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -105,9 +108,22 @@ fun RegisterScreen(
             )
             Spacer(modifier = Modifier.height(10.dp))
             Column() {
+                if (showError) {
+                    Text(
+                        text = "Os e-mails ou senhas não coincidem.",
+                        color = Color.Red,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
                 Button(
                     onClick = {
-                        navController.navigate("home")
+                        //navController.navigate("home")
+                        if(email == confirmEmail && password == confirmPassword) {
+                            registerViewModel.performRegistration(name, email, password, context, navController)
+                            registerViewModel.onShowErrorChange(false)
+                        } else {
+                            registerViewModel.onShowErrorChange(true)
+                        }
                     }, colors = ButtonDefaults.buttonColors(
                         contentColor = Color.White,
                         containerColor = colorResource(id = R.color.primary_green)

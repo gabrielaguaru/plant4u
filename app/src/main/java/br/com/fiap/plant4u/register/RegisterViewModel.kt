@@ -1,7 +1,16 @@
 package br.com.fiap.plant4u.register
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
+import br.com.fiap.plant4u.model.User
+import br.com.fiap.plant4u.service.RetrofitFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RegisterViewModel {
 
@@ -19,6 +28,9 @@ class RegisterViewModel {
 
     private val _confirmPassword = MutableLiveData<String>()
     val confirmPassword: LiveData<String> = _confirmPassword
+
+    private val _showError = MutableLiveData<Boolean>()
+    val showError: LiveData<Boolean> = _showError
 
     fun onNameChange(newName: String) {
         _name.value = newName
@@ -38,5 +50,34 @@ class RegisterViewModel {
 
     fun onConfirmPasswordChange(newConfirmPassword: String) {
         _confirmPassword.value = newConfirmPassword
+    }
+
+    fun onShowErrorChange(newShowError: Boolean) {
+        _showError.value = newShowError
+    }
+
+    fun performRegistration(name: String, email: String, password: String, context: Context, navController: NavController) {
+        val user = User(name, email, password)
+
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val response = RetrofitFactory().getAuthService().registerUser(user)
+
+                if (response.isSuccessful) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Cadastro concluído! Faça o login para continuar", Toast.LENGTH_SHORT).show()
+                        navController.navigate("login")
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Erro no cadastro. Tente novamente", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Ops! Ocorreu um erro. Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 }
