@@ -29,6 +29,9 @@ class RegisterViewModel {
     private val _confirmPassword = MutableLiveData<String>()
     val confirmPassword: LiveData<String> = _confirmPassword
 
+    private val _showErrorEmailOrPassword = MutableLiveData<Boolean>()
+    val showErrorEmailOrPassword: LiveData<Boolean> = _showErrorEmailOrPassword
+
     private val _showError = MutableLiveData<Boolean>()
     val showError: LiveData<Boolean> = _showError
 
@@ -52,12 +55,16 @@ class RegisterViewModel {
         _confirmPassword.value = newConfirmPassword
     }
 
+    fun onShowErrorEmailOrPasswordChange(newShowError: Boolean) {
+        _showErrorEmailOrPassword.value = newShowError
+    }
+
     fun onShowErrorChange(newShowError: Boolean) {
         _showError.value = newShowError
     }
 
     fun performRegistration(name: String, email: String, password: String, context: Context, navController: NavController) {
-        val user = User(name, email, password)
+        val user = User(fullName = name, email = email, password = password)
 
         GlobalScope.launch(Dispatchers.IO) {
             try {

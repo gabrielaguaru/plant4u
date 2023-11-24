@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
+import br.com.fiap.plant4u.model.LoginUser
 import br.com.fiap.plant4u.model.User
 import br.com.fiap.plant4u.service.RetrofitFactory
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,9 @@ class LoginViewModel {
     private val _loginState = MutableLiveData<User>()
     val loginState: LiveData<User> = _loginState
 
+    private val _showError = MutableLiveData<Boolean>()
+    val showError: LiveData<Boolean> = _showError
+
     fun onEmailChange(newEmail: String) {
         _email.value = newEmail
     }
@@ -30,10 +34,14 @@ class LoginViewModel {
     fun onPasswordChange(newPassword: String) {
         _password.value = newPassword
     }
+
+    fun onShowErrorChange(newShowError: Boolean) {
+        _showError.value = newShowError
+    }
 }
 
 fun performLogin(email: String, password: String, context: Context, navController: NavController) {
-    val user = User(email, password)
+    val user = LoginUser(email = email, password = password)
 
     GlobalScope.launch(Dispatchers.IO) {
         try {
@@ -42,7 +50,7 @@ fun performLogin(email: String, password: String, context: Context, navControlle
             if (response.isSuccessful) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, "Login bem sucedido", Toast.LENGTH_SHORT).show()
-                    navController.navigate("register")
+                    navController.navigate("home/${response.body()?.fullName}/${response.body()?.userId?.toLong()}")
                 }
             } else {
                 withContext(Dispatchers.Main) {

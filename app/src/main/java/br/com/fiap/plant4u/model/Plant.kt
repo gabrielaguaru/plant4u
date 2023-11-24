@@ -11,13 +11,3 @@ data class Plant(
     val nextWatering: String = "",
     val isError: Boolean = false
 )
-
-//data class Plant(
-//    val id: Long = 0,
-//    val name: String = "",
-//    val urlImage: String = "",
-//    @SerializedName("frequencyWatering") val frequency: String = "",
-//    val intervalTime: String = "",
-//    val lastWatering: String = "",
-//    val notification: Boolean = false
-//)

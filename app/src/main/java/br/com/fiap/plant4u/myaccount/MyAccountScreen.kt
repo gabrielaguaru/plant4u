@@ -2,26 +2,19 @@ package br.com.fiap.plant4u.myaccount
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,7 +22,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -45,10 +37,11 @@ import br.com.fiap.plant4u.components.Input
 @Composable
 fun MyAccountScreen(
     navController: NavController,
-    myAccountViewModel: MyAccountViewModel
+    myAccountViewModel: MyAccountViewModel,
+    fullName: String,
+    id: Long
 ) {
 
-    val name by myAccountViewModel.name.observeAsState(initial = "")
     val email by myAccountViewModel.email.observeAsState(initial = "")
     val currPassword by myAccountViewModel.currPassword.observeAsState(initial = "")
     val newPassword by myAccountViewModel.newPassword.observeAsState(initial = "")
@@ -60,7 +53,7 @@ fun MyAccountScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        Header(navController)
+        Header(navController, id = id, name = fullName)
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(30.dp))
             Text(
@@ -70,7 +63,7 @@ fun MyAccountScreen(
             )
             Spacer(modifier = Modifier.height(24.dp))
             Input(
-                name,
+                fullName,
                 "Nome",
                 0,
                 updateValue = {
@@ -78,7 +71,7 @@ fun MyAccountScreen(
                 }
             )
             Input(
-                email,
+        "*********@******.com",
                 "Email",
                 0,
                 updateValue = {
@@ -126,7 +119,7 @@ fun MyAccountScreen(
             Spacer(modifier = Modifier.height(50.dp))
             Button(
                 onClick = {
-                    navController.navigate("my-plants")
+                    navController.navigate("my-plants/${fullName}/${id}")
                 }, colors = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
                     containerColor = colorResource(id = R.color.primary_green)

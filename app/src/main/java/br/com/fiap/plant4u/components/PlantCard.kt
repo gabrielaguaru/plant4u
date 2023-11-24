@@ -69,6 +69,25 @@ fun PlantCard(
                         .fillMaxHeight(),
                     contentScale = ContentScale.Crop
                 )
+//                if(urlImage.isNullOrEmpty()) {
+//                    Image(
+//                        painter = painterResource(id = R.drawable.margarida),
+//                        contentDescription = "Imagem da planta",
+//                        modifier = Modifier
+//                            .width(100.dp)
+//                            .fillMaxHeight(),
+//                        contentScale = ContentScale.Crop
+//                    )
+//                } else {
+//                    AsyncImage(
+//                        model = urlImage,
+//                        contentDescription = "Imagem da planta",
+//                        modifier = Modifier
+//                            .width(100.dp)
+//                            .fillMaxHeight(),
+//                        contentScale = ContentScale.Crop
+//                    )
+//                }
             }
             Column(
                 modifier = Modifier

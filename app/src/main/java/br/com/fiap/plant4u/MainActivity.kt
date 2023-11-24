@@ -59,31 +59,49 @@ class MainActivity : ComponentActivity() {
                                 RegisterViewModel()
                             )
                         }
-                        composable(route = "home") {
+                        composable(route = "home/{name}/{id}") {
+                            val name = it.arguments?.getString("name")
+                            val id = it.arguments?.getString("id")?.toLong()
                             HomeScreen(
                                 navController,
-                                HomeScreenViewModel()
+                                HomeScreenViewModel(),
+                                name!!,
+                                id!!
                             )
                         }
-                        composable(route = "menu") {
-                            MenuScreen(navController)
+                        composable(route = "menu/{name}/{id}") {
+                            val name = it.arguments?.getString("name")
+                            val id = it.arguments?.getString("id")?.toLong()
+                            MenuScreen(navController, name!!, id!!)
                         }
-                        composable(route = "my-plants") {
+                        composable(route = "my-plants/{name}/{id}") {
+                            val name = it.arguments?.getString("name")
+                            val id = it.arguments?.getString("id")?.toLong()
                             MyPlantsScreen(
                                 navController,
-                                MyPlantsScreenViewModel()
+                                MyPlantsScreenViewModel(),
+                                name!!,
+                                id!!
                             )
                         }
-                        composable(route = "register-plant") {
+                        composable(route = "register-plant/{name}/{id}") {
+                            val name = it.arguments?.getString("name")
+                            val id = it.arguments?.getString("id")?.toLong()
                             RegisterPlantScreen(
                                 navController,
-                                RegisterPlantViewModel()
+                                RegisterPlantViewModel(),
+                                name!!,
+                                id!!
                             )
                         }
-                        composable(route = "my-account") {
+                        composable(route = "my-account/{name}/{id}") {
+                            val name = it.arguments?.getString("name")
+                            val id = it.arguments?.getString("id")?.toLong()
                             MyAccountScreen(
                                 navController,
-                                MyAccountViewModel()
+                                MyAccountViewModel(),
+                                name!!,
+                                id!!
                             )
                         }
                     }

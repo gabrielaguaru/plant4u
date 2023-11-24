@@ -28,7 +28,7 @@ import br.com.fiap.plant4u.ui.theme.Montserrat
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropdownInput(
-    label: String = "Frequência de rega",
+    label: String = "Frequência de rega*",
     options: List<String>,
     updateValue: (String) -> Unit
     ) {
@@ -45,7 +45,7 @@ fun DropdownInput(
         TextField(
             readOnly = true,
             value = selectedOptionText,
-            onValueChange = { updateValue },
+            onValueChange = {},
             label = { Text(label) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
@@ -68,7 +68,9 @@ fun DropdownInput(
                 textDecoration = TextDecoration.None,
                 fontFamily = Montserrat
             ),
-            modifier = Modifier.menuAnchor().fillMaxWidth()
+            modifier = Modifier
+                .menuAnchor()
+                .fillMaxWidth()
         )
         ExposedDropdownMenu(
             expanded = expanded,
@@ -80,9 +82,11 @@ fun DropdownInput(
                 DropdownMenuItem(
                     text = { Text(text = selectionOption) },
                     onClick = {
+                        updateValue(selectionOption)
                         selectedOptionText = selectionOption
                         expanded = false
                     }
+
                 )
             }
         }

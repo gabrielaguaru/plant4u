@@ -20,6 +20,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -40,7 +41,7 @@ import br.com.fiap.plant4u.repository.getAllTexts
 
 @Composable
 fun HomeScreen(
-    navController: NavController, homeScreenViewModel: HomeScreenViewModel
+    navController: NavController, homeScreenViewModel: HomeScreenViewModel, name: String, id: Long
 ) {
 
     val watering by homeScreenViewModel.watering.observeAsState(initial = false)
@@ -48,18 +49,24 @@ fun HomeScreen(
 
     val texts = getAllTexts()
 
+    LaunchedEffect(Unit) {
+        homeScreenViewModel.fetchPlantList(id)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         Header(
-            navController, showBackButton = false
+            navController, showBackButton = false,
+            id = id,
+            name = name
         )
         Column(modifier = Modifier.padding(horizontal = 16.dp)) {
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = "Olá, Gabriela",
+                text = "Olá, $name",
                 modifier = Modifier.fillMaxWidth(),
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
@@ -79,7 +86,7 @@ fun HomeScreen(
                 )
                 Button(
                     onClick = {
-                        navController.navigate("my-plants")
+                        navController.navigate("my-plants/${name}/${id}")
                     }, colors = ButtonDefaults.buttonColors(
                         contentColor = colorResource(id = R.color.primary_green),
                         containerColor = Color.Transparent
@@ -122,23 +129,6 @@ fun HomeScreen(
                     color = colorResource(id = R.color.primary_green),
                     fontSize = 18.sp
                 )
-//                Botão de ver mais dicas - futuramente
-//                Button(
-//                    onClick = {
-//                        //navController.navigate("tips")
-//                    }, colors = ButtonDefaults.buttonColors(
-//                        contentColor = colorResource(id = R.color.primary_green),
-//                        containerColor = Color.Transparent
-//                    ), contentPadding = PaddingValues(horizontal = 5.dp)
-//                ) {
-//                    Text(
-//                        text = "Ver mais", fontSize = 14.sp
-//                    )
-//                    Icon(
-//                        imageVector = Icons.Default.KeyboardArrowRight,
-//                        contentDescription = "Ícone seta para direita"
-//                    )
-//                }
             }
             Spacer(modifier = Modifier.height(15.dp))
             Carousel(texts[carouselCurrentIndex], addCurrentIndex = {

@@ -14,11 +14,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,21 +30,23 @@ import androidx.navigation.NavController
 import br.com.fiap.plant4u.R
 import br.com.fiap.plant4u.components.Header
 import br.com.fiap.plant4u.components.PlantCard
-import br.com.fiap.plant4u.home.HomeScreenViewModel
 import br.com.fiap.plant4u.repository.getAllPlants
 
 @Composable
 fun MyPlantsScreen(
     navController: NavController,
-    myPlantsScreenViewModel: MyPlantsScreenViewModel
+    myPlantsScreenViewModel: MyPlantsScreenViewModel,
+    name: String,
+    id: Long
 ) {
     val watering by myPlantsScreenViewModel.watering.observeAsState(initial = false)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        Header(navController)
+        Header(navController, id = id, name = name)
         Column(modifier = Modifier.padding(horizontal = 16.dp)) {
             Spacer(modifier = Modifier.height(24.dp))
             Row(
@@ -62,7 +61,7 @@ fun MyPlantsScreen(
                 )
                 Button(
                     onClick = {
-                        navController.navigate("register-plant")
+                        navController.navigate("register-plant/${name}/${id}")
                     }, colors = ButtonDefaults.buttonColors(
                         contentColor = Color.White,
                         containerColor = colorResource(id = R.color.primary_green)

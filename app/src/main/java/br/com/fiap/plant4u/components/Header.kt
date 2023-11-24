@@ -2,19 +2,12 @@ package br.com.fiap.plant4u.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -34,7 +27,9 @@ import br.com.fiap.plant4u.R
 fun Header(
     navController: NavController,
     isMenuOpen: Boolean = false,
-    showBackButton: Boolean = true
+    showBackButton: Boolean = true,
+    name: String,
+    id: Long
 ) {
     Row(
         modifier = Modifier
@@ -61,7 +56,7 @@ fun Header(
             }
         }
         Button(
-            onClick = { navController.navigate("home") },
+            onClick = { navController.navigate("home/${name}/${id}") },
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
                 containerColor = Color.Transparent
@@ -82,7 +77,7 @@ fun Header(
         if(isMenuOpen) {
             Button(
                 onClick = {
-                    navController.navigate("home")
+                    navController.navigate("home/${name}/${id}")
                 },
                 colors = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
@@ -98,7 +93,7 @@ fun Header(
         } else {
             Button(
                 onClick = {
-                    navController.navigate("menu")
+                    navController.navigate("menu/${name}/${id}")
                 },
                 colors = ButtonDefaults.buttonColors(
                     contentColor = Color.White,

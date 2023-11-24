@@ -21,6 +21,9 @@ class RegisterPlantViewModel {
     private val _interval = MutableLiveData<String>()
     val interval: LiveData<String> = _interval
 
+    private val _showError = MutableLiveData<Boolean>()
+    val showError: LiveData<Boolean> = _showError
+
 
     fun onNameChange(newName: String) {
         _name.value = newName
@@ -36,6 +39,10 @@ class RegisterPlantViewModel {
 
     fun onIntervalChange(newInterval: String) {
         _interval.value = newInterval
+    }
+
+    fun onShowErrorChange(newShowError: Boolean) {
+        _showError.value = newShowError
     }
 
 }

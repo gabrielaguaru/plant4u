@@ -1,6 +1,5 @@
 package br.com.fiap.plant4u.service
 
-import br.com.fiap.plant4u.model.Plant
 import br.com.fiap.plant4u.model.User
 import retrofit2.Call
 import retrofit2.http.GET

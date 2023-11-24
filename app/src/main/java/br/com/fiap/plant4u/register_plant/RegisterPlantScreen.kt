@@ -6,11 +6,9 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,7 +19,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -54,14 +51,15 @@ import br.com.fiap.plant4u.components.Input
 @Composable
 fun RegisterPlantScreen(
     navController: NavController,
-    registerPlantViewModel: RegisterPlantViewModel
+    registerPlantViewModel: RegisterPlantViewModel,
+    fullName: String,
+    id: Long
 ) {
 
     val name by registerPlantViewModel.name.observeAsState(initial = "")
-    //val imageUri by registerPlantViewModel.imageUri.observeAsState(initial = "")
-    val image by registerPlantViewModel.image.observeAsState(initial = "")
     val frequency by registerPlantViewModel.frequency.observeAsState(initial = "")
     val interval by registerPlantViewModel.interval.observeAsState(initial = "")
+    val showError by registerPlantViewModel.showError.observeAsState(initial = false)
 
     val checkedState = remember { mutableStateOf(true) }
 
@@ -70,7 +68,7 @@ fun RegisterPlantScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        Header(navController)
+        Header(navController, id = id, name = fullName)
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(30.dp))
             Text(
@@ -81,7 +79,7 @@ fun RegisterPlantScreen(
             Spacer(modifier = Modifier.height(24.dp))
             Input(
                 name,
-                "Nome da planta",
+                "Nome da planta*",
                 0,
                 updateValue = {
                     registerPlantViewModel.onNameChange(it)
@@ -92,7 +90,7 @@ fun RegisterPlantScreen(
                     registerPlantViewModel.onFrequencyChange(it)
                 })
             DropdownInput(
-                "Intervalo de tempo",
+                "Intervalo de tempo*",
                 listOf("Por dia", "Por semana", "Por mês"),
                 updateValue = {
                     registerPlantViewModel.onIntervalChange(it)
@@ -165,9 +163,16 @@ fun RegisterPlantScreen(
                 )
             }
             Spacer(modifier = Modifier.height(25.dp))
+            if (showError) {
+                Text(
+                    text = "Os campos nome da planta, frequência e intervalo são obrigatórios.",
+                    color = Color.Red,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+            }
             Button(
                 onClick = {
-                    navController.navigate("my-plants")
+                    navController.navigate("my-plants/${fullName}/${id}")
                 }, colors = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
                     containerColor = colorResource(id = R.color.primary_green)

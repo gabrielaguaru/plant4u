@@ -1,21 +1,15 @@
 package br.com.fiap.plant4u.menu
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,7 +21,7 @@ import br.com.fiap.plant4u.components.Header
 import br.com.fiap.plant4u.components.MenuOption
 
 @Composable
-fun MenuScreen(navController: NavController) {
+fun MenuScreen(navController: NavController, name: String, id: Long) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -35,7 +29,9 @@ fun MenuScreen(navController: NavController) {
     ) {
         Header(
             navController = navController,
-            isMenuOpen = true
+            isMenuOpen = true,
+            id = id,
+            name = name
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
@@ -56,28 +52,28 @@ fun MenuScreen(navController: NavController) {
                 "Home",
                 R.color.primary_green,
                 R.color.secondary_green,
-                "home"
+                "home/${name}/${id}"
             )
             MenuOption(
                 navController,
                 "Minha conta",
                 R.color.primary_green,
                 R.color.white,
-                "my-account"
+                "my-account/${name}/${id}"
             )
             MenuOption(
                 navController,
                 "Minhas plantas",
                 R.color.primary_green,
                 R.color.secondary_green,
-                "my-plants"
+                "my-plants/${name}/${id}"
             )
             MenuOption(
                 navController,
                 "Cadastrar plantas",
                 R.color.primary_green,
                 R.color.white,
-                "register-plant"
+                "register-plant/${name}/${id}"
             )
             MenuOption(
                 navController,
